@@ -1,0 +1,45 @@
+<html>
+	<head>
+		<title>Cartesian to Polar Sketch</title>
+		<link rel="stylesheet" type="text/css" href="../common/common.css">
+		<link rel="stylesheet" type="text/css" href="polar.css">
+	</head>
+	<body>
+		<script src="../common/jquery.min.js"></script>
+		<script src="../common/math.min.js" type="text/javascript"></script>
+		<script src="polar.js"></script>
+		
+		<hr>
+		<table><tr>
+			<td id="controls">
+				<h2>Cartesian to Polar Sketch</h2>
+
+				<table>
+					<tr><td>Wrap</td><td><input type="range" class="slider" id="slider_wrap" min="0" max="100" value="0"></td></tr>
+					<tr><td>Zoom</td><td><input type="range" class="slider" id="slider_zoom" min="5" max="300" value="50"></td></tr>
+					<tr><td>x-Bounds</td><td><input type="text" id="xbound_min" class="xbounds" value="-pi"> to <input type="text" id="xbound_max" class="xbounds" value="pi"></td></tr>
+					<tr><td colspan="2">&nbsp;</td></tr>
+					<tr><td>f(x) = </td><td><span id="error"></span><br><textarea id="equations">x</textarea></td></tr>
+					
+					<tr><td colspan="2"><br><button id="equation_enter">Graph</button></td></tr>
+				
+					<tr><td colspan="2">
+						<br>
+						<strong>Try some of these!</strong><br>
+						<a href="javascript:loadFunction('sin(6 * x) + 2', '-pi', 'pi')">Generic Flower</a> 
+						<a href="javascript:loadFunction('0.5 / (1 + 1.2* cos(x))', '-pi', 'pi')">Hyperbola</a> 
+						<a href="javascript:loadFunction('1 - cos(x)', '-pi', 'pi')">Cardioid</a> 
+						<a href="javascript:loadFunction('sin(x)  + (sin(5/2 * x))^3', '-2 * pi', '2 * pi')">Artichoke</a> 
+						<a href="javascript:loadFunction('e^(cos(x)) - 2* cos(4 * x) + (sin(x/12))^5', '-pi', 'pi')">Butterfly (A)</a> 
+						<a href="javascript:loadFunction('(cos(5 * x))^2 + sin(3 * x) + 0.3', '-pi', 'pi')">Butterfly (Oscar)</a> 
+						<br><br><br>
+						<p id="copyright"><a href="..">Math Sketches</a>, http://github.com/aegamesi/math-sketches</p>
+					</td></tr>
+				</table>
+			</td>
+			<td><div id="display">
+				<canvas id="canvasGraph" width="800" height="600"></canvas>
+			</div></td>
+		</tr></table>
+	</body>
+</html>
