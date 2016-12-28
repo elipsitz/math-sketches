@@ -17,11 +17,12 @@ var camera_x = 0;
 var camera_y = 0;
 var camera_zoom = 1;
 var objects = [];
+var selected = 0;
 
 // starter object
 objects = [
 	{x: 0, y: 0, mass: 100000, radius: 10, vx: 0, vy: 0, ax: 0, ay: 0},
-	{x: 300, y: 0, mass: 100000, radius: 5, vx: 0, vy: -10, ax: 0, ay: 0}
+	{x: 300, y: 0, mass: 10, radius: 5, vx: 0, vy: -10, ax: 0, ay: 0}
 ];
 
 function render() {
@@ -39,7 +40,7 @@ function render() {
 				continue;
 			var rx = objects[i].x - objects[j].x;
 			var ry = objects[i].y - objects[j].y;
-			var r = -(const_g * objects[j].mass) / Math.pow(Math.sqrt(rx * rx + ry * ry), 3);
+			var r = -(const_g * objects[j].mass) / Math.pow(mag(rx, ry), 3);
 
 			objects[i].ax += r * rx;
 			objects[i].ay += r * ry;
@@ -55,21 +56,23 @@ function render() {
 	}
 
 	// camera position
-	if(objects.length > 0) {
-		camera_x = objects[0].x - (graph_width * 0.5);
-		camera_y = objects[0].y - (graph_height * 0.5);
+	if(objects.length > selected) {
+		camera_x = objects[selected].x - (graph_width * 0.5);
+		camera_y = objects[selected].y - (graph_height * 0.5);
 	}
 
 	// draw objects
-	ctx.fillStyle = 'black';
 	for(var i = 0; i < objects.length; i++) {
 		var x = objects[i].x - camera_x;
 		var y = objects[i].y - camera_y;
+		ctx.fillStyle = (i == selected) ? 'red' : 'black';
+
 		ctx.beginPath();
 		ctx.arc(x, y, objects[i].radius * camera_zoom, 0, Math.PI * 2);
 		ctx.fill();
 
 		line(x, y, x + objects[i].vx, y + objects[i].vy);
+		line(x, y, x + objects[i].ax * 2, y + objects[i].ay * 2);
 	}
 
 	window.requestAnimFrame(render, canvas);
@@ -108,6 +111,9 @@ function lerp_pt(pt1, pt2, t) {
 		x: lerp(pt1.x, pt2.x, t),
 		y: lerp(pt1.y, pt2.y, t)
 	};
+}
+function mag(x, y) {
+	return Math.sqrt(x * x + y * y);
 }
 
 function getMousePos(canvas, evt) {
@@ -150,6 +156,14 @@ $(document).ready(function(){
 		canvas_mousedowny = pos.y;
 		canvas_mousex = pos.x;
 		canvas_mousey = pos.y;
+
+		// select new object
+		for(var i = 0; i < objects.length; i++) {
+			if(mag(objects[i].x - camera_x - pos.x, objects[i].y - camera_y - pos.y) <= objects[i].radius) {
+				selected = i;
+				break;
+			}
+		}
 	});
 	$(window).mouseup(function(e) {
 		canvas_mousedown = false;
