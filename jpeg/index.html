@@ -16,13 +16,19 @@
 				<table>
 					<tr>
 						<td><input type="file" id="photo_select"></td>
+						<td>
+							<div id="display">
+								<canvas id="photo_display"></canvas>
+							</div>
+						</td>
 					</tr>
 				</table>
 			</td>
 			<td>
-				<div id="display">
-					<canvas id="photo_display">
-				</div>
+				<canvas class="subblock" id="block_rgb" width="8" height="8"></canvas>
+				<canvas class="subblock" id="block_y" width="8" height="8"></canvas>
+				<canvas class="subblock" id="block_cb" width="8" height="8"></canvas>
+				<canvas class="subblock" id="block_cr" width="8" height="8"></canvas>
 			</td>
 		</tr></table>
 	</body>
