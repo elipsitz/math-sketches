@@ -5,7 +5,7 @@ var display_ctx;
 var block_data;
 var block_size = 8;
 
-// TODO load these
+var block_pos = {x: -1, y: -1};
 var block_rgb_canvas;
 var block_rgb_context;
 var block_y_canvas;
@@ -30,7 +30,11 @@ function getMousePos(canvas, evt) {
     };
 }
 
-function extractBlock(pos) {
+function getBlockPos(mouse_pos) {
+	return {x: Math.floor(mouse_pos.x / block_size), y: Math.floor(mouse_pos.y / block_size)};
+}
+
+function extractBlock(new_block_pos) {
 	blocks = {
 		y: Array(block_size * block_size),
 		cb: Array(block_size * block_size),
@@ -38,10 +42,9 @@ function extractBlock(pos) {
 
 		image_data: null
 	};
-	pos.x = Math.floor(pos.x / block_size) * block_size;
-	pos.y = Math.floor(pos.y / block_size) * block_size;
+	block_pos = new_block_pos;
 
-	blocks.image_data = display_ctx.getImageData(pos.x, pos.y, block_size, block_size);
+	blocks.image_data = display_ctx.getImageData(block_pos.x * block_size, block_pos.y * block_size, block_size, block_size);
 	var data = blocks.image_data.data;
 	for (var i = 0; i < block_size * block_size; i++) {
 		var r = data[i * 4 + 0];
@@ -107,10 +110,26 @@ $(document).ready(function(){
     	reader.readAsDataURL(file);
 	});
 	
+	var updateBlockDisplay = function(e) {
+		var mouse_pos = getMousePos(display_canvas, e);
+		var new_block_pos = getBlockPos(mouse_pos);
+		if (new_block_pos.x != block_pos.x || new_block_pos.y != block_pos.y) {
+			block_data = extractBlock(new_block_pos);
+			renderBlocks();
+		}
+	};
+	var mouse_down = false;
 	$('#photo_display').mousedown(function(e) {
-		var pos = getMousePos(display_canvas, e);
-		block_data = extractBlock(pos);
-		renderBlocks();
+		mouse_down = true;
+		updateBlockDisplay(e);
+	});
+	$('#photo_display').mouseup(function(e) {
+		mouse_down = false;
+	});
+	$('#photo_display').mousemove(function(e) {
+		if (mouse_down) {
+			updateBlockDisplay(e);
+		}
 	});
 
 	window.onerror = function(message) {
