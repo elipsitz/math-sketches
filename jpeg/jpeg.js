@@ -15,6 +15,8 @@ var block_cb_context;
 var block_cr_canvas;
 var block_cr_context;
 
+var inv_root_two = 1.0 / Math.SQRT2;
+
 function setupCanvas(w, h) {
 	display_canvas = $('#photo_display');
 	display_canvas.attr('width', w);
@@ -65,6 +67,37 @@ function ycbcrToRgb(p) {
 		g: p.y - 0.344136 * (p.cb - 128) - 0.714136 * (p.cr - 128),
 		b: p.y + 1.772 * (p.cb - 128)
 	};
+}
+
+// shifts by 128, then does the DCT.
+function dctBlock(raw) {
+	// input = shifted raw
+	var input = Array(block_size * block_size);
+	for (var i = 0; i < block_size * block_size; i++) {
+		input[i] = raw[i] - 128;
+	}
+
+	// output = DCT'd input
+	// warning: horribly naive code with bad complexity
+	// adapted from https://codepen.io/32bitkid/post/exploring-the-discrete-cosine-transform
+	var output = Array(block_size * block_size);
+	for (var v = 0; v < 8; v++) {
+		for (var u = 0; u < 8; u++) {
+			var sum = 0;
+			for (var y = 0; y < 8; y++) {
+				for (var x = 0; x < 8; x++) {
+					var val = input[(y * 8) + x];
+					val *= Math.cos(((2*x+1) * u * Math.PI)/16);
+					val *= Math.cos(((2*y+1) * v * Math.PI)/16);
+					sum += val;
+				}
+			}
+			var au = (u == 0) ? (inv_root_two) : 1;
+			var av = (v == 0) ? (inv_root_two) : 1;
+			output[(v * 8) + u] = 0.25 * au * av * sum;
+		}
+	}
+	return output;
 }
 
 function renderBlocks() {
