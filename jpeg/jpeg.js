@@ -119,6 +119,15 @@ function generateQuantizationMatrix(q_factor) {
 	return output;
 }
 
+// quantizes the given block with the given quantization matrix -- returns a copy
+function quantizeBlock(raw, matrix) {
+	var output = Array(raw.length);
+	for (var i = 0; i < raw; i++) {
+		output[i] = Math.round(raw[i] / matrix[i]);
+	}
+	return output;
+}
+
 function renderBlocks() {
 	function renderBlock(context, data, conv) {
 		var image_data = context.getImageData(0, 0, block_size, block_size);
