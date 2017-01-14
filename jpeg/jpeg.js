@@ -122,7 +122,7 @@ function generateQuantizationMatrix(q_factor) {
 // quantizes the given block with the given quantization matrix -- returns a copy
 function quantizeBlock(raw, matrix) {
 	var output = Array(raw.length);
-	for (var i = 0; i < raw; i++) {
+	for (var i = 0; i < raw.length; i++) {
 		output[i] = Math.round(raw[i] / matrix[i]);
 	}
 	return output;
