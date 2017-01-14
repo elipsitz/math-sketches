@@ -15,7 +15,17 @@ var block_cb_context;
 var block_cr_canvas;
 var block_cr_context;
 
+// constants
 var inv_root_two = 1.0 / Math.SQRT2;
+var base_quantization_matrix = 
+	[ 16, 11, 10, 16, 24,  40,  51,  61,
+	  12, 12, 14, 19, 26,  58,  60,  55,
+	  14, 13, 16, 24, 40,  57,  69,  56,
+	  14, 17, 22, 29, 51,  87,  80,  62,
+	  18, 22, 37, 56, 68,  109, 103, 77,
+	  24, 35, 55, 64, 81,  104, 113, 92,
+	  49, 64, 78, 87, 103, 121, 120, 101,
+	  72, 92, 95, 98, 112, 100, 103, 99 ];
 
 function setupCanvas(w, h) {
 	display_canvas = $('#photo_display');
@@ -96,6 +106,15 @@ function dctBlock(raw) {
 			var av = (v == 0) ? (inv_root_two) : 1;
 			output[(v * 8) + u] = 0.25 * au * av * sum;
 		}
+	}
+	return output;
+}
+
+function generateQuantizationMatrix(q_factor) {
+	var s = (q_factor < 50) ? (5000 / q_factor) : (200 - (2 * q_factor));
+	var output = Array(base_quantization_matrix.length);
+	for (var i = 0; i < output.length; i++) {
+		output[i] = Math.floor((s * base_quantization_matrix[i] + 50) / 100);
 	}
 	return output;
 }
