@@ -150,6 +150,7 @@ function polarToCartesian(radius, theta, center) {
 $(document).ready(function(){
 	canvas = $('#canvasGraph');
     ctx = canvas[0].getContext('2d');
+    ctx.scale(2, 2);
 	
 	// begin jQuery Event Handlers
 	$('#slider_wrap').on('input change', function(){
