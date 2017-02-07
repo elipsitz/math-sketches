@@ -22,6 +22,7 @@ function redraw() {
 	// draw in the control points/control path
 	ctx.fillStyle = 'lightGray';
 	ctx.strokeStyle = 'lightGray';
+	ctx.lineWidth = 2;
 	for(var i = 0; i < control_points.length; i++) {
 		ctx.beginPath();
 		ctx.arc(control_points[i].x, control_points[i].y, 2, 0, Math.PI * 2);
@@ -38,6 +39,7 @@ function redraw() {
 	// now, draw in current progress
 	//ctx.strokeStyle = 'black';
 	//ctx.beginPath();
+	ctx.lineWidth = 1;
 	var points = control_points.slice(0);
 	while(points.length > 1) {
 		ctx.strokeStyle = graph_colors[points.length % graph_colors.length];
@@ -68,6 +70,7 @@ function redraw() {
 	
 	// now render rendered points
 	ctx.strokeStyle = 'red';
+	ctx.lineWidth = 2;
 	ctx.beginPath();
 	var drawn = false;
 	for(var i = 0; i < (t * 100); i++) {
