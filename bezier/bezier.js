@@ -134,6 +134,7 @@ function getMousePos(canvas, evt) {
 $(document).ready(function(){
 	canvas = $('#canvas')[0];
     ctx = canvas.getContext('2d');
+    ctx.scale(2, 2);
 	
 	// begin jQuery Event Handlers
 	$('#slider_percent').on('input change', function(){

@@ -17,17 +17,28 @@
 					<tr><td>%</td><td><input type="range" class="slider" id="slider_percent" min="0" max="100" value="0"></td></tr>
 					<tr><td colspan="2">&nbsp;</td></tr>
 					
-					<tr><td colspan="2">
-						<br>
-						<button id="button_clear">Clear</button>
-						<button id="button_go">Go</button>
-					</td></tr>
+					<tr>
+						<td colspan="2">
+							<br>
+							<button id="button_clear">Clear</button>
+							<button id="button_go">Go</button>
+						</td>
+					</tr>
 				</table>
-				<br><br><br>
+
+				<div id="instructions">
+					<h4>Instructions</h4>
+					<ol>
+						<li>Click anywhere on the rectangle to set control points</li>
+						<li>Press 'Go' to animate the drawing of your bezier curve</li>
+						<li>Drag the '%' slider to manually set the interpolation parameter</li>
+					</ol>
+				</div>
+
 				<p id="copyright"><a href="..">Math Sketches</a>, <a href="http://github.com/aegamesi/math-sketches">View on GitHub</a></p>
 			</td>
 			<td><div id="display">
-				<canvas id="canvas" width="800" height="600"></canvas>
+				<canvas id="canvas" width="1600" height="1200" style="width: 800px; height: 600px;"></canvas>
 			</div></td>
 		</tr></table>
 	</body>

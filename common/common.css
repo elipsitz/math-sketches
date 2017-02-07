@@ -11,6 +11,14 @@ body {
 	padding-right: 25px;
 	vertical-align: top;
 }
+
 #canvas {
 	border: 2px solid;
+}
+
+#instructions {
+	border: 1px solid grey;
+	padding: 8px;
+	margin-top: 32px;
+	margin-bottom: 32px;
 }
