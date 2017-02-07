@@ -50,13 +50,6 @@ function redraw() {
 			if(i == 0)
 				ctx.moveTo(new_pt.x, new_pt.y);
 			ctx.lineTo(new_pt.x, new_pt.y);
-			/*if(i > 0)
-				line(next_arr[i - 1].x, next_arr[i - 1].y, new_pt.x, new_pt.y);*/
-			/*if(i > 0) {
-				ctx.moveTo(next_arr[i - 1].x, next_arr[i - 1].y);
-				ctx.lineTo(new_pt.x, new_pt.y);
-				ctx.stroke();
-			}*/
 		}
 		ctx.stroke();
 		points = next_arr;
@@ -67,7 +60,7 @@ function redraw() {
 	if(points.length == 1) {
 		if(t < 1.0) {
 			ctx.beginPath();
-			ctx.arc(points[0].x, points[0].y, 4, 0, Math.PI * 2);
+			circle(points[0].x, points[0].y, 4);
 			ctx.fill();
 		}
 		rendered_points[(t * 100) | 0] = points[0];
@@ -88,29 +81,8 @@ function redraw() {
 	ctx.stroke();
 }
 
-function line(x0, y0, x1, y1){
-   x0 = x0 | 0;
-   y0 = y0 | 0;
-   x1 = x1 | 0;
-   y1 = y1 | 0;
-   var dx = Math.abs(x1-x0);
-   var dy = Math.abs(y1-y0);
-   var sx = (x0 < x1) ? 1 : -1;
-   var sy = (y0 < y1) ? 1 : -1;
-   var err = dx-dy;
-
-   while(true){
-     setPixel(x0,y0);  // Do what you need to for this
-
-     if ((x0==x1) && (y0==y1)) break;
-     var e2 = 2*err;
-     if (e2 >-dy){ err -= dy; x0  += sx; }
-     if (e2 < dx){ err += dx; y0  += sy; }
-   }
-}
-
-function setPixel(x, y) {
-	ctx.fillRect(x, y, 1, 1);
+function circle(x, y, r) {
+	ctx.arc(x, y, r, 0, Math.PI * 2);
 }
 
 function lerp(x1, x2, t) {
